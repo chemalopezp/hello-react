@@ -6,7 +6,7 @@ import {
 } from "@testing-library/react";
 import PokemonList from "../pokemon-list";
 import userEvent from "@testing-library/user-event";
-import { server, rest } from "../test/mock-server";
+import { server, rest } from "../../mock-server";
 import pokemonsResultPage1 from "./pokemon-result-limit-5-offset-0.json";
 import pokemonsResultPage2 from "./pokemon-result-limit-5-offset-5.json";
 import pokemonsResultPage3 from "./pokemon-result-limit-5-offset-10.json";
