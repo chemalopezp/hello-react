@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  entry: "./cart-query/index.js",
+  entry: "./local-storage-hook/index.js",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "build"),
