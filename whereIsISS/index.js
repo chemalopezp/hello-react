@@ -3,22 +3,29 @@ import { createRoot } from "react-dom/client";
 
 function App() {
   const [positions, setPositions] = useState([]);
+  const [error, setError] = useState([]);
   const [startTime, setStartTime] = useState(
     new Date().toISOString().slice(0, 16)
   );
   const [endTime, setEndTime] = useState(new Date().toISOString().slice(0, 16));
 
   const fetchPosition = async (startTime, endTime) => {
-    const apiUrl = `https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps=
+    const apiUrl = `https://api.wheretheiss.at/v1/satellites/25544/positissons?timestamps=
     ${new Date(startTime).getTime() / 1000},${
       new Date(endTime).getTime() / 1000
     }`;
     try {
       const response = await fetch(apiUrl, {});
+      console.log("response", response);
+      if (response.status !== 200) {
+        setError(`Error on the API ${response.statusText}`);
+        return [];
+      }
       const data = await response.json();
       return data;
     } catch (e) {
       console.error("Error on the API", e);
+      setError(`Error on the API ${e}`);
       return [];
     }
   };
@@ -44,6 +51,7 @@ function App() {
         endTime={endTime}
         onChange={onChange}
         onSubmit={onSubmit}
+        error={error}
       />
       <PositionTable positions={positions} />
     </div>
@@ -52,7 +60,6 @@ function App() {
 
 // Part 1
 function PositionTable({ positions }) {
-  console.log("positions table", positions);
   return (
     <div className="position-table-div">
       <table>
@@ -62,13 +69,14 @@ function PositionTable({ positions }) {
             <th>Latitude</th>
             <th>Longitude</th>
           </tr>
-          {positions?.map((position, i) => (
-            <tr key={i}>
-              <td>{position.timestamp}</td>
-              <td>{position.latitude}</td>
-              <td>{position.longitude}</td>
-            </tr>
-          ))}
+          {positions.lenght > 0 &&
+            positions?.map((position, i) => (
+              <tr key={i}>
+                <td>{position.timestamp}</td>
+                <td>{position.latitude}</td>
+                <td>{position.longitude}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
@@ -76,7 +84,7 @@ function PositionTable({ positions }) {
 }
 
 // Part 2
-function Form({ startTime, endTime, onChange, onSubmit }) {
+function Form({ startTime, endTime, onChange, onSubmit, error }) {
   return (
     <form
       className="time-range-form"
@@ -102,7 +110,7 @@ function Form({ startTime, endTime, onChange, onSubmit }) {
         />
       </label>
       <input type="submit" value="Get position data!" className="input" />
-      {/* <div className="error-text">{errors}</div> */}
+      <div className="error-text">{error}</div>
     </form>
   );
 }
