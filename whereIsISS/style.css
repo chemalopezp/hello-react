@@ -1,0 +1,26 @@
+/* todo */
+
+.position-table-div {
+  width: 100%;
+  margin: auto;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+.time-range-form {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.error-text {
+  color: red;
+}
+
+.input {
+  width: 150px;
+}
